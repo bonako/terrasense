@@ -1,0 +1,363 @@
+<html>
+<head>
+    <title>Capstone Project</title>
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+    <!-- <style type='text/css'>body{margin:0;padding:0;overflow:hidden;font-family:'Segoe UI',Helvetica,Arial,Sans-Serif}</style> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script> 
+
+    <!-- <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-analytics.js";
+  import { getDatabase } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-database.js";
+</script> -->
+
+
+<style>
+/*---------------------------*/
+/* Read Sensors */
+/*---------------------------*/
+.sensorList {
+ margin:0;
+ padding:0;
+ width:200px;
+ float:left;
+ margin:10px;
+ border:1px solid #4fc3fc;
+}
+.sensorList h2 {
+ padding:10px;
+ margin:0;
+ color:white;
+}
+.sensorList li {
+ padding:5px 10px;
+ border-top:1px solid #4fc3fc;
+ cursor: pointer;
+ color:white;
+ font-style: italic;
+}
+.sensorList li:hover {
+ background: #4fc3fc;
+}
+.sensorDetail {
+ float:left;
+ width:200px;
+ margin:10px;
+ margin-left:0;
+ padding:10px;
+ border:1px solid #4fc3fc;
+ color:white;
+}
+</style>
+</head>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+        <img src="../images/farmlogo.png" width="140" height="50" alt="">
+</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="./index.html">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="./data.html">Data</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Dropdown
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">Something else here</a>
+          </div>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+
+<div class="modal fade" id="soilModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" >Soybean Soil Moisture</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <canvas id="soilSoy" style="width:100%;max-width:600px"></canvas>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="tempModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" >Soybean Temperature</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <canvas id="tempSoy" style="width:100%;max-width:600px"></canvas>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="humiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" >Soybean Humidity</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <canvas id="humiSoy" style="width:100%;max-width:600px"></canvas>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="windModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" >Soybean Wind Speed</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <canvas id="windSoy" style="width:100%;max-width:600px"></canvas>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+ <!-- <ul class="sensorList"></ul> -->
+
+ <!-- <div class="sensorDetail">
+ <p >Name :<strong class="detailName"></strong></p>
+ <p >Age: <strong class="detailAge"></strong></p>
+ <p >Email: <strong class="detailEmail"></strong></p>
+ </div> -->
+
+<table class="table" id="data">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Soil Moisture</th>
+      <th scope="col">Temperature</th>
+      <th scope="col">Wind Speed</th>
+      <th scope="col">Humidity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Soybeans</td>
+      <td><a href="#" data-toggle="modal" data-target="#soilModal">14</a></td>
+      <td><a href="#" data-toggle="modal" data-target="#tempModal">19</a></td>
+      <td><a href="#" data-toggle="modal" data-target="#windModal">40</a></td>
+      <td><a href="#" data-toggle="modal" data-target="#humiModal">23</a></td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>Potatoes</td>
+      <td><a href="#" data-toggle="modal" data-target="#soilModal">45</a></td>
+      <td><a href="#" data-toggle="modal" data-target="#tempModal">21</a></td>
+      <td><a href="#" data-toggle="modal" data-target="#windModal">81</a></td>
+      <td><a href="#" data-toggle="modal" data-target="#humiModal">75</a></td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td>Tomatoes</td>
+      <td><a href="#" data-toggle="modal" data-target="#soilModal">50</a></td>
+      <td><a href="#" data-toggle="modal" data-target="#tempModal">32</a></td>
+      <td><a href="#" data-toggle="modal" data-target="#windModal">114</a></td>
+      <td><a href="#" data-toggle="modal" data-target="#humiModal">10</a></td>
+    </tr>
+  </tbody>
+</table>
+
+ <!-- <div id="">
+  <table id="sendat">
+    <tr>
+      <td>Number</td><td>Name</td><td>Wind</td><td>Soil</td><td>Temp</td><td>Humi</td><td>Light</td>
+    </tr>
+  </table>
+ </div> -->
+
+
+<script>
+var xValues = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun","Mon","Tue","Wed","Thu"];
+var yValues = [54,12,76,87,34,90,45,31,67,53,12];
+
+new Chart("tempSoy", {
+  type: "line",
+  data: {
+    labels: xValues,
+    datasets: [{
+      fill: false,
+      lineTension: 0,
+      backgroundColor: "rgba(0,0,255,1.0)",
+      borderColor: "rgba(0,0,255,0.1)",
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    scales: {
+      yAxes: [{ticks: {min: 10, max:95}}],
+    }
+  }
+});
+
+var xValues = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun","Mon","Tue","Wed","Thu"];
+var yValues = [7,8,8,9,9,9,10,11,14,14,15];
+
+new Chart("humiSoy", {
+  type: "line",
+  data: {
+    labels: xValues,
+    datasets: [{
+      fill: false,
+      lineTension: 0,
+      backgroundColor: "rgba(0,0,255,1.0)",
+      borderColor: "rgba(0,0,255,0.1)",
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    scales: {
+      yAxes: [{ticks: {min: 6, max:16}}],
+    }
+  }
+});
+
+var xValues = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun","Mon","Tue","Wed","Thu"];
+var yValues = [56,87,23,54,95,37,48,65,13,112,34];
+
+new Chart("windSoy", {
+  type: "line",
+  data: {
+    labels: xValues,
+    datasets: [{
+      fill: false,
+      lineTension: 0,
+      backgroundColor: "rgba(0,0,255,1.0)",
+      borderColor: "rgba(0,0,255,0.1)",
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    scales: {
+      yAxes: [{ticks: {min: 10, max:120}}],
+    }
+  }
+});
+
+var xValues = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun","Mon","Tue","Wed","Thu"];
+var yValues = [56,90,87,65,43,21,65,87,56,90,56];
+
+new Chart("soilSoy", {
+  type: "line",
+  data: {
+    labels: xValues,
+    datasets: [{
+      fill: false,
+      lineTension: 0,
+      backgroundColor: "rgba(0,0,255,1.0)",
+      borderColor: "rgba(0,0,255,0.1)",
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    scales: {
+      yAxes: [{ticks: {min: 15, max:100}}],
+    }
+  }
+});
+</script>
+
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { getDatabase, ref, child, get } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.1.2/firebase-analytics.js";
+
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyD0_lM4i9Vu51KbQQOUEt00M0mxArOU1cU",
+    authDomain: "myapplication-885a4.firebaseapp.com",
+    databaseURL: "https://myapplication-885a4.firebaseio.com",
+    projectId: "myapplication-885a4",
+    storageBucket: "myapplication-885a4.appspot.com",
+    messagingSenderId: "315024999053",
+    appId: "1:315024999053:web:f33aa706fa9f18533598c4",
+    measurementId: "G-PKB1T4ZYBZ"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  // const database = getDatabase(app);
+
+
+
+</script>
+<script src="https://www.gstatic.com/firebasejs/5.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.0.0/firebase-database.js"></script>
+
+</html>
+

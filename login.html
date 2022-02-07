@@ -1,0 +1,444 @@
+<link
+  rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+  crossorigin="anonymous"
+/>
+<script>
+  var HTML = "";
+  var USER = null;
+</script>
+<script
+  src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+  crossorigin="anonymous"
+></script>
+<script src="https://www.gstatic.com/firebasejs/5.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.0.0/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.0.0/firebase-auth.js"></script>
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<link rel="stylesheet" href="nicepage.css" media="screen">
+<link rel="stylesheet" href="Home.css" media="screen">
+    <script class="u-script" type="text/javascript" src="jquery.js" defer=""></script>
+    <script class="u-script" type="text/javascript" src="nicepage.js" defer=""></script>
+    <meta name="generator" content="Nicepage 4.2.6, nicepage.com">
+    <link id="u-theme-google-font" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i|Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i">
+    <script type="application/ld+json">{
+      "@context": "http://schema.org",
+      "@type": "Organization",
+      "name": "",
+      "logo": "images/default-logo.png"
+  }</script>    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+    
+<body id="body">
+  <nav class="nav nav-pills nav-fill">
+    <a
+      class="nav-item nav-link"
+      id="hpbt"
+      data-target=""
+      data-toggle="modal"
+      href="#"
+      >Homepage</a
+    >
+    <a
+      class="nav-item nav-link"
+      id="acbt"
+      data-target=""
+      data-toggle="modal"
+      href="#"
+      >Account</a
+    >
+    <a
+      class="nav-item nav-link"
+      id="mrks"
+      data-target=""
+      data-toggle="modal"
+      href="#"
+      >Map</a
+    >
+    <a
+      class="nav-item nav-link"
+      id="chrt"
+      data-target=""
+      data-toggle="modal"
+      href="#"
+      >Charts</a
+    >
+    <a
+      class="nav-item nav-link"
+      id="logo"
+      data-target=""
+      data-toggle="modal"
+      href="#"
+      >Logout</a
+    >
+    <a
+      class="nav-item nav-link"
+      data-target="#limo"
+      data-toggle="modal"
+      href="#"
+      >Login</a
+    >
+    <a
+      class="nav-item nav-link"
+      data-target="#sumo"
+      data-toggle="modal"
+      href="#"
+      >Signup</a
+    >
+  </nav>
+  <div id="map"></div>
+  <div class="container">
+    <div class="row" id="row"></div>
+  </div>
+  <div
+    class="modal fade"
+    style="display: none"
+    id="sumo"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="exampleModalLabel">Sign up</h3>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- <h4>Sign up</h4> -->
+
+          <form id="sufo">
+            <div class="form-group">
+              <label for="displayName">Display name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="sudn"
+                aria-describedby="dispName"
+                placeholder="Enter display name"
+              />
+            </div>
+            <div class="form-group">
+              <label for="phoneNumber">Phone number</label>
+              <input
+                type="text"
+                class="form-control"
+                ara-describedby="phoneNumber"
+                placeholder="Enter phone number"
+                onkeydown="phoneNumberFormatter()"
+                id="supn"
+              />
+
+              <script>
+                function formatPhoneNumber(value) {
+                  if (!value) return value;
+                  const phoneNumber = value.replace(/[^\d]/g, "");
+                  const phoneNumberLength = phoneNumber.length;
+                  if (phoneNumberLength < 4) return phoneNumber;
+                  if (phoneNumberLength < 7) {
+                    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(
+                      3
+                    )}`;
+                  }
+                  return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(
+                    3,
+                    6
+                  )}-${phoneNumber.slice(6, 9)}`;
+                }
+
+                function phoneNumberFormatter() {
+                  const inputField = document.getElementById("supn");
+                  const formattedInputValue = formatPhoneNumber(
+                    inputField.value
+                  );
+                  inputField.value = formattedInputValue;
+                }
+              </script>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputEmail1">Email address</label>
+              <input
+                type="email"
+                class="form-control"
+                id="suem"
+                aria-describedby="emailHelp"
+                placeholder="Enter email"
+              />
+              <small id="emailHelp" class="form-text text-muted"
+                >We'll never share your email with anyone else.</small
+              >
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="supw"
+                placeholder="Password"
+              />
+            </div>
+            <!-- <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+              </div> -->
+            <button type="submit" class="btn bg-warning">Submit</button>
+          </form>
+
+          <!-- <form id="sufo">
+              <div class="input-field">
+                <input type="email" id="suem" required />
+                <label for="signup=email">Email address</label>
+              </div>
+              <div class="input-field">
+                <input type="password" id="supw" required />
+                <label for="signup-password">Choose password</label>
+              </div>
+              <button class="btn bg-warning">Sign up</button>
+            </form> -->
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="limo"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="exampleModalLabel">Login</h3>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- <h4>Login</h4> -->
+          <form id="lifo">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Email address</label>
+              <input
+                type="email"
+                class="form-control"
+                id="liem"
+                aria-describedby="emailHelp"
+                placeholder="Enter email"
+              />
+              <small id="emailHelp" class="form-text text-muted"
+                >We'll never share your email with anyone else.</small
+              >
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="lipw"
+                placeholder="Password"
+              />
+            </div>
+            <!-- <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+              </div> -->
+            <button type="submit" class="btn bg-success">Login</button>
+          </form>
+
+          <!-- <form id="lifo">
+              <div class="input-field">
+                <input type="email" id="liem" required />
+                <label for="login=email">Email address</label>
+              </div>
+              <div class="input-field">
+                <input type="password" id="lipw" required />
+                <label for="login-password">Password</label>
+              </div>
+              <button class="btn btn-primary">Log in</button>
+            </form> -->
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="lomo"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Signup</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h4>Login</h4>
+          <form id="login-form">
+            <div class="input-field">
+              <input type="email" id="liem" required />
+              <label for="login=email">Email address</label>
+            </div>
+            <div class="input-field">
+              <input type="password" id="lipw" required />
+              <label for="login-password">Choose password</label>
+            </div>
+            <button class="btn bg-warning">Log in</button>
+          </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="acmo"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Signup</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h4>Login</h4>
+          <form id="login-form">
+            <div class="input-field">
+              <input type="email" id="liem" required />
+              <label for="login=email">Email address</label>
+            </div>
+            <div class="input-field">
+              <input type="password" id="lipw" required />
+              <label for="login-password">Choose password</label>
+            </div>
+            <button class="btn bg-warning">Log in</button>
+          </form>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+
+
+  <div
+  class="modal fade"
+  id="hpmo"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+
+</body>
+
+<script>
+  var config = {
+    apiKey: "AIzaSyD0_lM4i9Vu51KbQQOUEt00M0mxArOU1cU",
+    authDomain: "myapplication-885a4.firebaseapp.com",
+    databaseURL: "https://myapplication-885a4.firebaseio.com",
+    projectId: "myapplication-885a4",
+    storageBucket: "myapplication-885a4.appspot.com",
+    messagingSenderId: "315024999053",
+    appId: "1:315024999053:web:f33aa706fa9f18533598c4",
+    measurementId: "G-PKB1T4ZYBZ",
+  };
+  firebase.initializeApp(config);
+
+  const auth = firebase.auth();
+  const db = firebase.database();
+</script>
+
+
+<script src="./auth.js"></script>
+<script src="./acc.js"></script>
+   
+        <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&libraries=&v=weekly&channel=2"
+      async
+    ></script>

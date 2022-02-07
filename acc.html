@@ -1,0 +1,103 @@
+<link
+  rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+  crossorigin="anonymous"
+/>
+<script
+  src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+  integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+  integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+  crossorigin="anonymous"
+></script>
+<script
+  src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+  integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+  crossorigin="anonymous"
+></script>
+<script src="https://www.gstatic.com/firebasejs/5.0.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.0.0/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.0.0/firebase-auth.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<link rel="stylesheet" href="styles.css" />
+
+<body>
+  <div>
+    <nav class="nav nav-pills nav-fill">
+      <a
+        class="nav-item nav-link"
+        data-target="#acmo"
+        data-toggle="modal"
+        href="#"
+        >Account</a
+      >
+      <a
+        class="nav-item nav-link"
+        id="logo"
+        data-target=""
+        data-toggle="modal"
+        href="#"
+        >Logout</a
+      >
+      <a
+        class="nav-item nav-link"
+        data-target="#limo"
+        data-toggle="modal"
+        href="#"
+        >Login</a
+      >
+      <a
+        class="nav-item nav-link"
+        data-target="#sumo"
+        data-toggle="modal"
+        href="#"
+        >Signup</a
+      >
+    </nav>
+  </div>
+  <div class="container">
+    <div class="row justify-content-start">
+      <div id="user" class="col-4">One of two columns</div>
+      <div class="col-4">One of two columns</div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-4">One of two columns</div>
+      <div class="col-4">One of two columns</div>
+    </div>
+    <div class="row justify-content-end">
+      <div class="col-4">One of two columns</div>
+      <div class="col-4">One of two columns</div>
+    </div>
+    <div class="row justify-content-around">
+      <div class="col-4">One of two columns</div>
+      <div class="col-4">One of two columns</div>
+    </div>
+    <div class="row justify-content-between">
+      <div class="col-4">One of two columns</div>
+      <div class="col-4">One of two columns</div>
+    </div>
+  </div>
+</body>
+
+<script>
+  var config = {
+    apiKey: "AIzaSyD0_lM4i9Vu51KbQQOUEt00M0mxArOU1cU",
+    authDomain: "myapplication-885a4.firebaseapp.com",
+    databaseURL: "https://myapplication-885a4.firebaseio.com",
+    projectId: "myapplication-885a4",
+    storageBucket: "myapplication-885a4.appspot.com",
+    messagingSenderId: "315024999053",
+    appId: "1:315024999053:web:f33aa706fa9f18533598c4",
+    measurementId: "G-PKB1T4ZYBZ",
+  };
+  firebase.initializeApp(config);
+
+  const auth = firebase.auth();
+  const db = firebase.database();
+</script>
+
+<!-- <script src="./auth.js"></script> -->
